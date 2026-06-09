@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'koneksi.php';
 
 $stmt = $conn->prepare("
@@ -526,6 +527,7 @@ $result = $stmt->get_result();
             border-top: 1px solid var(--border);
             opacity: 0;
             transition: opacity 0.2s;
+            min-height: 0;
         }
         .product-card:hover .admin-actions { opacity: 1; }
         .btn-edit, .btn-delete {
@@ -773,7 +775,7 @@ $result = $stmt->get_result();
             grid-template-columns: 1.5fr 1fr 1fr;
             gap: 32px;
         }
-        .footer-brand .logo { color: #F297A0; font-size: 24px; display: block; margin-bottom: 10px; }
+        .footer-brand .logo { color: #ef929b; font-size: 24px; display: block; margin-bottom: 10px; }
         .footer-brand p { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
         .footer-col h4 { font-size: 13px; font-weight: 700; margin-bottom: 14px; }
         .footer-col a {
@@ -830,10 +832,17 @@ $result = $stmt->get_result();
             <span>|</span>
             <a href="#">🔔 Notifikasi</a>
             <span>|</span>
-            <a href="login.php">Masuk / Daftar</a>
+            <?php if(isset($_SESSION['user_id'])): ?>
+                <span style="color:rgba(255,255,255,0.85);">Halo, <?= htmlspecialchars($_SESSION['user_nama'] ?? 'User') ?>!</span>
+                <span>|</span>
+                <a href="logout.php" style="color:rgba(255,255,255,0.85);text-decoration:none;">Logout</a>
+            <?php else: ?>
+                <a href="login.php" style="color:rgba(255,255,255,0.85);text-decoration:none;">Masuk / Daftar</a>
+            <?php endif; ?>
         </div>
     </div>
 </div>
+<!-- ✅ TIDAK ADA </header> di sini -->
 
 <!-- HEADER -->
 <header>
@@ -875,20 +884,41 @@ $result = $stmt->get_result();
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
                     </svg>
-                    <span>Akun</span>
+                    <span><?= isset($_SESSION['user_id']) ? htmlspecialchars($_SESSION['user_nama']) : 'Akun' ?></span>
                 </div>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <a href="profil.php">👤 &nbsp;Profil Saya</a>
-                    <a href="riwayat_pesanan.php">📦 &nbsp;Pesanan Saya</a>
-                    <a href="wishlist.php">❤️ &nbsp;Wishlist</a>
-                    <a href="pengaturan.php">⚙️ &nbsp;Pengaturan</a>
-                    <hr class="dropdown-divider">
-                    <a href="login.php" class="logout-link">🚪 &nbsp;Masuk / Daftar</a>
+                    <?php if(isset($_SESSION['user_id'])): ?>
+                        <div style="padding:12px 18px 8px;border-bottom:1px solid #F3EBD8;margin-bottom:4px;">
+                            <div style="font-size:13px;font-weight:700;color:#333;">
+                                <?= htmlspecialchars($_SESSION['user_nama']) ?>
+                            </div>
+                            <div style="font-size:11px;color:#aaa;margin-top:2px;">
+                                <?= htmlspecialchars($_SESSION['user_email']) ?>
+                            </div>
+                        </div>
+                        <a href="/beautify/profil.php">👤 &nbsp;Profil Saya</a>
+                        <a href="riwayat_pesanan.php">📦 &nbsp;Pesanan Saya</a>
+                        <?php if(($_SESSION['user_role'] ?? '') === 'admin'): ?>
+                        <a href="/beautify/pages/admin/dashboard.php">⚙️ &nbsp;Panel Admin</a>
+                        <?php endif; ?>
+                        <hr class="dropdown-divider">
+                        <a href="/beautify/logout.php" class="logout-link">🚪 &nbsp;Keluar</a>
+                    <?php else: ?>
+                        <a href="/beautify/login.php">🚪 &nbsp;Masuk</a>
+                        <a href="/beautify/register.php">📝 &nbsp;Daftar</a>
+                    <?php endif; ?>
                 </div>
             </div>
+            <!-- ✅ </div> profile-wrapper ditutup di sini -->
+
         </div>
+        <!-- ✅ </div> header-actions ditutup di sini -->
+
     </div>
+    <!-- ✅ </div> header-inner ditutup di sini -->
+
 </header>
+<!-- ✅ </header> HANYA ADA SATU, di sini -->
 
 <!-- CATEGORY NAV -->
 <nav class="category-nav">
@@ -999,7 +1029,9 @@ $result = $stmt->get_result();
                 </div>
             </div>
             <div style="display:flex;align-items:center;gap:14px;">
+                <?php if(($_SESSION['user_role'] ?? '') === 'admin'): ?>
                 <a href="tambah_produk.php" class="btn-add-product">+ Tambah Produk</a>
+                <?php endif; ?>
                 <a href="kategori.php?cat=flash-sale" class="see-all">Lihat Semua →</a>
             </div>
         </div>
@@ -1075,10 +1107,12 @@ $result = $stmt->get_result();
                         <span style="background:#DCDFBA;color:#5A5E3A;font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;margin-left:4px;">Official</span>
                     </div>
                 </div>
+                <?php if(($_SESSION['user_role'] ?? '') === 'admin'): ?>
                 <div class="admin-actions">
                     <a href="edit_produk.php?id=<?= $data['id_product']; ?>" class="btn-edit">✏ Edit</a>
                     <a href="hapus_produk.php?id=<?= $data['id_product']; ?>" onclick="return confirm('Hapus produk ini?')" class="btn-delete">🗑 Hapus</a>
                 </div>
+                <?php endif; ?>
             </div>
             <?php endwhile; ?>
         </div>
@@ -1091,7 +1125,6 @@ $result = $stmt->get_result();
 
 <!-- CART SIDEBAR -->
 <div class="cart-sidebar" id="cartSidebar">
-    <a href="cart.php" class="btn-checkout-main">Lihat Keranjang →</a>
     <div class="cart-header-side">
         <h3>🛒 Keranjang Belanja</h3>
         <button class="btn-close-cart" onclick="closeCart()">✕</button>
@@ -1127,8 +1160,6 @@ $result = $stmt->get_result();
                 <span class="pay-tag">OVO</span>
                 <span class="pay-tag">Dana</span>
                 <span class="pay-tag">BCA</span>
-                <span class="pay-tag">BRI</span>
-                <span class="pay-tag">Mandiri</span>
             </div>
         </div>
         <div class="footer-col">
@@ -1143,7 +1174,7 @@ $result = $stmt->get_result();
         </div>
     </div>
     <div class="footer-bottom">
-        © 2026 Beautify Marketplace. Hak Cipta Dilindungi. | 🇮🇩 Indonesia
+        ©️ 2026 Beautify Marketplace. Hak Cipta Dilindungi. | 🇮🇩 Indonesia
     </div>
 </footer>
 

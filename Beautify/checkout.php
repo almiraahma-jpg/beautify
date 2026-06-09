@@ -27,33 +27,11 @@
         .back-btn { color: white; text-decoration: none; font-size: 13px; font-weight: 600; }
         .back-btn:hover { opacity: 0.8; }
 
-        /* STEP INDICATOR */
-        .steps {
-            max-width: 1100px;
-            margin: 24px auto 0;
-            padding: 0 20px;
-            display: flex;
-            align-items: center;
-            gap: 0;
-        }
-        .step {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
+        .steps { max-width: 1100px; margin: 24px auto 0; padding: 0 20px; display: flex; align-items: center; gap: 0; }
+        .step { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-muted); }
         .step.active { color: var(--pink); }
         .step.done { color: #B6BB79; }
-        .step-num {
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            background: #EDD9CC;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 12px;
-            font-weight: 700;
-        }
+        .step-num { width: 28px; height: 28px; border-radius: 50%; background: #EDD9CC; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
         .step.active .step-num { background: var(--pink); color: white; }
         .step.done .step-num { background: #B6BB79; color: white; }
         .step-line { flex: 1; height: 2px; background: #EDD9CC; margin: 0 12px; }
@@ -63,41 +41,28 @@
         .card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 16px; }
         .card-title { font-size: 16px; font-weight: 700; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
 
-        /* FORM */
         .form-group { margin-bottom: 14px; }
         .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%; padding: 10px 14px; border: 1px solid var(--border);
             border-radius: 8px; font-size: 13px; font-family: inherit;
             color: var(--text); background: white; outline: none; transition: border 0.2s;
         }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(242,151,160,0.15); }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(242,151,160,0.15); }
         .form-group input.error { border-color: #e07880; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .error-msg { font-size: 11px; color: #e07880; margin-top: 4px; display: none; }
         .error-msg.show { display: block; }
 
-        /* PAYMENT OPTIONS */
         .payment-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .payment-option {
-            border: 2px solid var(--border); border-radius: 10px; padding: 14px 12px;
-            cursor: pointer; transition: border 0.2s, background 0.2s;
-            display: flex; align-items: center; gap: 10px;
-            font-size: 13px; font-weight: 600;
-        }
+        .payment-option { border: 2px solid var(--border); border-radius: 10px; padding: 14px 12px; cursor: pointer; transition: border 0.2s, background 0.2s; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
         .payment-option input[type="radio"] { accent-color: var(--pink); width: 16px; height: 16px; }
         .payment-option:has(input:checked) { border-color: var(--pink); background: #FFF5F6; }
         .pay-icon { font-size: 22px; }
 
-        /* EWALLET INPUT */
         .ewallet-input { display: none; margin-top: 12px; }
         .ewallet-input.show { display: block; }
 
-        /* ORDER SUMMARY */
         .order-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
         .order-item:last-child { border-bottom: none; }
         .order-item-name { font-weight: 500; }
@@ -106,71 +71,24 @@
         .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
         .summary-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; color: var(--text); margin: 14px 0; padding-top: 14px; border-top: 2px solid var(--border); }
 
-        .btn-bayar {
-            display: block; width: 100%; background: var(--pink); color: white;
-            text-align: center; padding: 14px; border-radius: 10px;
-            font-size: 15px; font-weight: 700; border: none; cursor: pointer;
-            transition: background 0.2s, transform 0.15s;
-        }
+        .btn-bayar { display: block; width: 100%; background: var(--pink); color: white; text-align: center; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: background 0.2s, transform 0.15s; }
         .btn-bayar:hover { background: #e07880; transform: translateY(-1px); }
         .btn-bayar:active { transform: translateY(0); }
 
-        /* MODAL SUKSES */
-        .modal-overlay {
-            display: none;
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 500;
-            align-items: center;
-            justify-content: center;
-        }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; align-items: center; justify-content: center; }
         .modal-overlay.open { display: flex; }
-        .modal-box {
-            background: white;
-            border-radius: 20px;
-            padding: 48px 36px;
-            text-align: center;
-            max-width: 420px;
-            width: 90%;
-            animation: popIn 0.3s ease;
-        }
-        @keyframes popIn {
-            from { opacity:0; transform: scale(0.85); }
-            to   { opacity:1; transform: scale(1); }
-        }
+        .modal-box { background: white; border-radius: 20px; padding: 48px 36px; text-align: center; max-width: 420px; width: 90%; animation: popIn 0.3s ease; }
+        @keyframes popIn { from { opacity:0; transform: scale(0.85); } to { opacity:1; transform: scale(1); } }
         .modal-icon { font-size: 72px; display: block; margin-bottom: 16px; }
         .modal-box h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
         .modal-box p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 8px; }
-        .order-code { 
-            background: #FFF5F6; border: 1px dashed var(--pink);
-            border-radius: 8px; padding: 10px 16px;
-            font-size: 18px; font-weight: 700; color: var(--pink);
-            letter-spacing: 2px; margin: 16px 0;
-        }
+        .order-code { background: #FFF5F6; border: 1px dashed var(--pink); border-radius: 8px; padding: 10px 16px; font-size: 18px; font-weight: 700; color: var(--pink); letter-spacing: 2px; margin: 16px 0; }
         .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-        .btn-modal-main {
-            flex: 1; background: var(--pink); color: white;
-            padding: 12px; border-radius: 8px; text-decoration: none;
-            font-weight: 700; font-size: 14px; text-align: center;
-            border: none; cursor: pointer;
-        }
+        .btn-modal-main { flex: 1; background: var(--pink); color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; text-align: center; border: none; cursor: pointer; }
         .btn-modal-main:hover { background: #e07880; }
-        .btn-modal-sec {
-            flex: 1; background: var(--secondary); color: var(--secondary-text);
-            padding: 12px; border-radius: 8px; text-decoration: none;
-            font-weight: 700; font-size: 14px; text-align: center;
-        }
+        .btn-modal-sec { flex: 1; background: var(--secondary); color: var(--secondary-text); padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; text-align: center; }
 
-        /* LOADING SPINNER */
-        .spinner {
-            display: none;
-            width: 20px; height: 20px;
-            border: 3px solid rgba(255,255,255,0.4);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            margin: 0 auto;
-        }
+        .spinner { display: none; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         @media (max-width: 768px) {
@@ -189,28 +107,19 @@
     </div>
 </header>
 
-<!-- STEP INDICATOR -->
 <div class="steps">
-    <div class="step done">
-        <div class="step-num">✓</div>
-        <span>Keranjang</span>
-    </div>
+    <div class="step done"><div class="step-num">✓</div><span>Keranjang</span></div>
     <div class="step-line done"></div>
-    <div class="step active">
-        <div class="step-num">2</div>
-        <span>Checkout</span>
-    </div>
+    <div class="step active"><div class="step-num">2</div><span>Checkout</span></div>
     <div class="step-line"></div>
-    <div class="step">
-        <div class="step-num">3</div>
-        <span>Selesai</span>
-    </div>
+    <div class="step"><div class="step-num">3</div><span>Selesai</span></div>
 </div>
 
 <div class="container">
 
-    <!-- KIRI: FORM -->
+    <!-- ✅ KOLOM KIRI: FORM -->
     <div>
+
         <!-- Alamat -->
         <div class="card">
             <div class="card-title">📍 Alamat Pengiriman</div>
@@ -248,6 +157,7 @@
                 <input type="text" id="catatan" placeholder="Taruh di depan pintu, dll...">
             </div>
         </div>
+        <!-- /card alamat -->
 
         <!-- Metode Pengiriman -->
         <div class="card">
@@ -271,6 +181,7 @@
                 </label>
             </div>
         </div>
+        <!-- /card pengiriman -->
 
         <!-- Metode Pembayaran -->
         <div class="card">
@@ -294,23 +205,23 @@
                 </label>
             </div>
 
-            <!-- Input nomor e-wallet -->
+            <!-- Info e-wallet -->
             <div class="ewallet-input show" id="input-gopay">
-                <div class="form-group" style="margin-top:12px;margin-bottom:0;">
-                    <label>Nomor GoPay *</label>
-                    <input type="text" id="no-gopay" placeholder="08xxxxxxxxxx">
+                <div style="margin-top:12px;background:#FFF5F6;border-radius:8px;padding:14px;font-size:13px;">
+                    <div style="font-weight:700;margin-bottom:4px;">💚 GoPay</div>
+                    <div>Scan QR atau transfer ke <b>081234567890</b> a.n. <b>Beautify Indonesia</b></div>
                 </div>
             </div>
             <div class="ewallet-input" id="input-ovo">
-                <div class="form-group" style="margin-top:12px;margin-bottom:0;">
-                    <label>Nomor OVO *</label>
-                    <input type="text" id="no-ovo" placeholder="08xxxxxxxxxx">
+                <div style="margin-top:12px;background:#FFF5F6;border-radius:8px;padding:14px;font-size:13px;">
+                    <div style="font-weight:700;margin-bottom:4px;">💜 OVO</div>
+                    <div>Transfer ke <b>081234567890</b> a.n. <b>Beautify Indonesia</b></div>
                 </div>
             </div>
             <div class="ewallet-input" id="input-dana">
-                <div class="form-group" style="margin-top:12px;margin-bottom:0;">
-                    <label>Nomor Dana *</label>
-                    <input type="text" id="no-dana" placeholder="08xxxxxxxxxx">
+                <div style="margin-top:12px;background:#FFF5F6;border-radius:8px;padding:14px;font-size:13px;">
+                    <div style="font-weight:700;margin-bottom:4px;">💙 Dana</div>
+                    <div>Transfer ke <b>081234567890</b> a.n. <b>Beautify Indonesia</b></div>
                 </div>
             </div>
             <div class="ewallet-input" id="input-transfer">
@@ -321,10 +232,14 @@
                     <div style="margin-top:8px;font-size:11px;color:var(--text-muted);">Upload bukti transfer setelah pembayaran di halaman pesanan.</div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- KANAN: RINGKASAN -->
+        </div>
+        <!-- /card pembayaran -->
+
+    </div>
+    <!-- ✅ TUTUP KOLOM KIRI -->
+
+    <!-- ✅ KOLOM KANAN: RINGKASAN -->
     <div>
         <div class="card" style="position:sticky;top:80px;">
             <div class="card-title">🧾 Ringkasan Pesanan</div>
@@ -346,8 +261,10 @@
             </div>
         </div>
     </div>
+    <!-- ✅ TUTUP KOLOM KANAN -->
 
 </div>
+<!-- ✅ TUTUP CONTAINER -->
 
 <!-- MODAL SUKSES -->
 <div class="modal-overlay" id="modalSukses">
@@ -365,13 +282,11 @@
 </div>
 
 <script>
-    // ─── LOAD CART ───
     let cart = JSON.parse(sessionStorage.getItem('beautify_cart') || '[]');
     if (cart.length === 0) window.location.href = 'cart.php';
 
     function formatRp(n) { return 'Rp ' + parseInt(n).toLocaleString('id-ID'); }
 
-    // ─── RENDER RINGKASAN ───
     const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
     const ongkir   = subtotal >= 50000 ? 0 : 15000;
     const total    = subtotal + ongkir;
@@ -391,7 +306,6 @@
         </div>
     `).join('');
 
-    // ─── TOGGLE E-WALLET INPUT ───
     function showEwallet(type) {
         ['gopay','ovo','dana','transfer'].forEach(t => {
             document.getElementById('input-' + t).classList.remove('show');
@@ -399,7 +313,6 @@
         document.getElementById('input-' + type).classList.add('show');
     }
 
-    // ─── VALIDASI ───
     function validate() {
         let valid = true;
         const fields = ['nama', 'telepon', 'alamat', 'kota', 'kodepos'];
@@ -418,51 +331,42 @@
         return valid;
     }
 
-    // ─── PROSES BAYAR ───
-        function prosesBayar() {
-    const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);  // ← tambah ini
-    const ongkir   = subtotal >= 50000 ? 0 : 15000;                   // ← tambah ini
-    const total    = subtotal + ongkir;                                // ← tambah ini
+    function prosesBayar() {
+        const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
+        const ongkir   = subtotal >= 50000 ? 0 : 15000;
+        const total    = subtotal + ongkir;
 
-    if (!validate()) {
-            // scroll ke error pertama
+        if (!validate()) {
             document.querySelector('.error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
             return;
         }
 
-        // Simulasi loading
         document.getElementById('btnText').style.display = 'none';
         document.getElementById('spinner').style.display = 'block';
         document.querySelector('.btn-bayar').disabled = true;
 
         setTimeout(() => {
-            // Generate kode order
             const kode = 'BTF-' + Date.now().toString().slice(-6).toUpperCase();
             document.getElementById('orderCode').textContent = kode;
 
-          // Simpan ke riwayat
-const pesananLama = JSON.parse(sessionStorage.getItem('beautify_pesanan') || '[]');
-pesananLama.unshift({
-    kode     : kode,
-    tanggal  : new Date().toISOString(),
-    items    : [...cart],
-    subtotal : subtotal,
-    ongkir   : ongkir,
-    total    : total,
-    nama     : document.getElementById('nama').value,
-    pembayaran: document.querySelector('input[name="pembayaran"]:checked').value
-});
-sessionStorage.setItem('beautify_pesanan', JSON.stringify(pesananLama));
+            const pesananLama = JSON.parse(sessionStorage.getItem('beautify_pesanan') || '[]');
+            pesananLama.unshift({
+                kode      : kode,
+                tanggal   : new Date().toISOString(),
+                items     : [...cart],
+                subtotal  : subtotal,
+                ongkir    : ongkir,
+                total     : total,
+                nama      : document.getElementById('nama').value,
+                pembayaran: document.querySelector('input[name="pembayaran"]:checked').value
+            });
+            sessionStorage.setItem('beautify_pesanan', JSON.stringify(pesananLama));
+            sessionStorage.removeItem('beautify_cart');
 
-// Kosongkan cart
-sessionStorage.removeItem('beautify_cart');
-
-            // Tampilkan modal sukses
             document.getElementById('modalSukses').classList.add('open');
-        }, 1800); // simulasi proses 1.8 detik
+        }, 1800);
     }
 
-    // ─── REAL-TIME VALIDASI ───
     ['nama','telepon','alamat','kota','kodepos'].forEach(f => {
         document.getElementById(f).addEventListener('input', function() {
             if (this.value.trim()) {

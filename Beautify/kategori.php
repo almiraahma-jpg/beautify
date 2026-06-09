@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'koneksi.php';
 
 $cat = $_GET['cat'] ?? '';
@@ -26,7 +27,6 @@ $pageTitle   = $catName ?? ucwords(str_replace('-', ' ', $cat));
 $pageEmoji   = $catEmoji[$cat] ?? '🛍';
 
 if ($catName) {
-    // Filter berdasarkan kategori spesifik
     $stmt = $conn->prepare("
         SELECT p.*, c.category_name
         FROM products p
@@ -36,7 +36,6 @@ if ($catName) {
     ");
     $stmt->bind_param('s', $catName);
 } else {
-    // Semua produk (untuk flash-sale, best-seller, dll)
     $stmt = $conn->prepare("
         SELECT p.*, c.category_name
         FROM products p
@@ -180,6 +179,22 @@ $totalProduk = $result->num_rows;
         .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
         .section-title { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; }
 
+        /* ─── ADD PRODUCT BTN ─── */
+        .btn-add-product {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--pink);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .btn-add-product:hover { background: #e07880; }
+
         /* ─── PRODUCT GRID ─── */
         .product-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
         .product-card { background: white; border-radius: var(--card-radius); overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: box-shadow 0.25s, transform 0.25s; cursor: pointer; position: relative; }
@@ -283,7 +298,13 @@ $totalProduk = $result->num_rows;
             <span>|</span>
             <a href="#">🔔 Notifikasi</a>
             <span>|</span>
-            <a href="login.php">Masuk / Daftar</a>
+            <?php if(isset($_SESSION['user_id'])): ?>
+                <span style="color:rgba(255,255,255,0.85);">Halo, <?= htmlspecialchars($_SESSION['user_nama'] ?? 'User') ?>!</span>
+                <span>|</span>
+                <a href="/beautify/logout.php">Logout</a>
+            <?php else: ?>
+                <a href="/beautify/login.php">Masuk / Daftar</a>
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -294,8 +315,8 @@ $totalProduk = $result->num_rows;
         <a href="index.php" class="logo">Beauti<span>fy</span></a>
 
         <div class="search-bar">
-            <input type="text" placeholder="Cari produk, merek, kategori...">
-            <button>
+            <input type="text" id="searchInput" placeholder="Cari produk, merek, kategori..." autocomplete="off">
+            <button onclick="doSearch()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;">
                     <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                 </svg>
@@ -319,15 +340,25 @@ $totalProduk = $result->num_rows;
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
                     </svg>
-                    <span>Akun</span>
+                    <span><?= isset($_SESSION['user_id']) ? htmlspecialchars($_SESSION['user_nama']) : 'Akun' ?></span>
                 </div>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <a href="profil.php">👤 &nbsp;Profil Saya</a>
-                    <a href="pesanan.php">📦 &nbsp;Pesanan Saya</a>
-                    <a href="wishlist.php">❤️ &nbsp;Wishlist</a>
-                    <a href="pengaturan.php">⚙️ &nbsp;Pengaturan</a>
-                    <hr class="dropdown-divider">
-                    <a href="login.php" class="logout-link">🚪 &nbsp;Masuk / Daftar</a>
+                    <?php if(isset($_SESSION['user_id'])): ?>
+                        <div style="padding:12px 18px 8px;border-bottom:1px solid #F3EBD8;margin-bottom:4px;">
+                            <div style="font-size:13px;font-weight:700;color:#333;"><?= htmlspecialchars($_SESSION['user_nama']) ?></div>
+                            <div style="font-size:11px;color:#aaa;margin-top:2px;"><?= htmlspecialchars($_SESSION['user_email']) ?></div>
+                        </div>
+                        <a href="/beautify/profil.php">👤 &nbsp;Profil Saya</a>
+                        <a href="riwayat_pesanan.php">📦 &nbsp;Pesanan Saya</a>
+                        <?php if(($_SESSION['user_role'] ?? '') === 'admin'): ?>
+                        <a href="/beautify/pages/admin/dashboard.php">⚙️ &nbsp;Panel Admin</a>
+                        <?php endif; ?>
+                        <hr class="dropdown-divider">
+                        <a href="/beautify/logout.php" class="logout-link">🚪 &nbsp;Keluar</a>
+                    <?php else: ?>
+                        <a href="/beautify/login.php">🚪 &nbsp;Masuk</a>
+                        <a href="/beautify/register.php">📝 &nbsp;Daftar</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -378,6 +409,16 @@ $totalProduk = $result->num_rows;
 
     <!-- ─── PRODUCTS ─── -->
     <div class="section-panel">
+        <div class="section-header">
+            <div class="section-title">
+                <span><?= $pageEmoji ?></span>
+                <span><?= htmlspecialchars($pageTitle) ?></span>
+            </div>
+            <?php if(($_SESSION['user_role'] ?? '') === 'admin'): ?>
+            <a href="tambah_produk.php" class="btn-add-product">+ Tambah Produk</a>
+            <?php endif; ?>
+        </div>
+
         <?php if ($totalProduk == 0): ?>
         <div class="empty-state">
             <span class="es-icon">🔍</span>
@@ -447,10 +488,12 @@ $totalProduk = $result->num_rows;
                     </div>
                 </div>
 
+                <?php if(($_SESSION['user_role'] ?? '') === 'admin'): ?>
                 <div class="admin-actions">
                     <a href="edit_produk.php?id=<?= $data['id_product']; ?>" class="btn-edit">✏ Edit</a>
                     <a href="hapus_produk.php?id=<?= $data['id_product']; ?>" onclick="return confirm('Hapus produk ini?')" class="btn-delete">🗑 Hapus</a>
                 </div>
+                <?php endif; ?>
             </div>
             <?php endwhile; ?>
         </div>
@@ -499,33 +542,19 @@ $totalProduk = $result->num_rows;
                 <span class="pay-tag">OVO</span>
                 <span class="pay-tag">Dana</span>
                 <span class="pay-tag">BCA</span>
-                <span class="pay-tag">BRI</span>
-                <span class="pay-tag">Mandiri</span>
             </div>
         </div>
         <div class="footer-col">
             <h4>Layanan Pelanggan</h4>
-            <a href="#">Pusat Bantuan</a>
-            <a href="#">Cara Belanja</a>
             <a href="#">Lacak Pesanan</a>
-            <a href="#">Kebijakan Retur</a>
-            <a href="#">Hubungi Kami</a>
+            <a href="hubungi_kami.php">Hubungi Kami</a>
         </div>
         <div class="footer-col">
             <h4>Tentang Beautify</h4>
-            <a href="#">Tentang Kami</a>
-            <a href="#">Blog Kecantikan</a>
-            <a href="#">Karir</a>
-            <a href="#">Press</a>
-            <a href="#">Kebijakan Privasi</a>
+            <a href="tentang_kami.php">Tentang Kami</a>
+            <a href="blog_kecantikan.php">Blog Kecantikan</a>
         </div>
-        <div class="footer-col">
-            <h4>Untuk Penjual</h4>
-            <a href="#">Daftar Jadi Seller</a>
-            <a href="#">Panduan Seller</a>
-            <a href="#">Flash Sale Program</a>
-            <a href="#">Iklan di Beautify</a>
-        </div>
+    
     </div>
     <div class="footer-bottom">
         © 2026 Beautify Marketplace. Hak Cipta Dilindungi. | 🇮🇩 Indonesia
@@ -574,8 +603,7 @@ function removeItem(id) {
 }
 
 function updateCartBadge() {
-    const total = cart.reduce((s, c) => s + c.qty, 0);
-    document.getElementById('cartBadge').textContent = total;
+    document.getElementById('cartBadge').textContent = cart.reduce((s, c) => s + c.qty, 0);
 }
 
 function renderCart() {
@@ -623,6 +651,15 @@ document.addEventListener('click', function(e) {
 function setFilter(btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+}
+
+// ─── SEARCH (redirect ke index dengan keyword) ───
+document.getElementById('searchInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doSearch();
+});
+function doSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (q) window.location.href = `index.php?search=${encodeURIComponent(q)}`;
 }
 
 // ─── INIT ───
